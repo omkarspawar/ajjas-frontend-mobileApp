@@ -1,0 +1,22 @@
+current directory: /Users/omkarpawar/Developer/Projects/ajjas/ajjasFE/ajjas/vendor/bundle/ruby/2.7.0/gems/strscan-3.1.0/ext/strscan
+/opt/homebrew/opt/ruby@2.7/bin/ruby extconf.rb
+checking for onig_region_memsize() in ruby.h... yes
+checking for rb_reg_onig_match() in ruby.h... no
+creating Makefile
+
+current directory: /Users/omkarpawar/Developer/Projects/ajjas/ajjasFE/ajjas/vendor/bundle/ruby/2.7.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240627-18082-1c60wpi sitelibdir\=./.gem.20240627-18082-1c60wpi clean
+
+current directory: /Users/omkarpawar/Developer/Projects/ajjas/ajjasFE/ajjas/vendor/bundle/ruby/2.7.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240627-18082-1c60wpi sitelibdir\=./.gem.20240627-18082-1c60wpi
+compiling strscan.c
+linking shared-object strscan.bundle
+ld: warning: -multiply_defined is obsolete
+ld: warning: ignoring duplicate libraries: '-lruby.2.7'
+
+current directory: /Users/omkarpawar/Developer/Projects/ajjas/ajjasFE/ajjas/vendor/bundle/ruby/2.7.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240627-18082-1c60wpi sitelibdir\=./.gem.20240627-18082-1c60wpi install
+/usr/bin/install -c -m 0755 strscan.bundle ./.gem.20240627-18082-1c60wpi
+
+current directory: /Users/omkarpawar/Developer/Projects/ajjas/ajjasFE/ajjas/vendor/bundle/ruby/2.7.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240627-18082-1c60wpi sitelibdir\=./.gem.20240627-18082-1c60wpi clean
