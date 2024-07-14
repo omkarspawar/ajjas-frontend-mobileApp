@@ -8,7 +8,8 @@ import {
   Image,
   Alert,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
 import moment from 'moment';
 const calenderImage = require('./src/Assets/calender.png');
@@ -149,7 +150,7 @@ const MyComponent = () => {
         {!!isLoading ? 
         <ActivityIndicator size="large" color="#FFBE00" style={{display:"flex", flex:1}}/>
           :
-          <View style={styles.middleContainer}>
+          <ScrollView style={styles.middleContainer}>
 {/* --------------Riding behaviour card----------- */}
           <View style={styles.ridingBehaviorcardWrapper}>
             <View style={styles.ridingBehaviorTitleWrapper}>
@@ -277,7 +278,8 @@ const MyComponent = () => {
           isRCRangeIncresed={false}
           ChangedRCRangeCount={"24%"}
           />
-        </View>
+          
+        </ScrollView>
         }
 {/* -----------------DateRange Modal -------------------------*/}
       <Modal
@@ -376,6 +378,7 @@ const styles = StyleSheet.create({
   middleContainer: {
     flex: 1,
     marginHorizontal: 20,
+    
   },
 
   ridingBehaviorcardWrapper: {
