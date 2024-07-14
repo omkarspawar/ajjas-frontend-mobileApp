@@ -45,7 +45,7 @@ const MyComponent = () => {
   useEffect(()=>{
 
 
-fetch("http://192.168.1.5:8000/api/statistics", {
+fetch("https://ajjas-backend.vercel.app/api/statistics", {
   method: "POST",
   headers: {
     'Accept': 'application/json',
