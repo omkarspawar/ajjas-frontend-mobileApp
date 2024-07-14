@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from 'react';
+import React, {Component, useEffect, useLayoutEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   Modal,
+  ActivityIndicator
 } from 'react-native';
 import moment from 'moment';
 const calenderImage = require('./src/Assets/calender.png');
@@ -40,68 +41,79 @@ const MyComponent = () => {
     scoreStatusColor:"#259DFE",
   })
   const [isModalVisible, setIsModalVisible] = useState(false)
- 
+  const [isLoading, setIsLoading,] = useState(false)
+
 
   useEffect(()=>{
-
-
-fetch("https://ajjas-backend.vercel.app/api/statistics", {
-  method: "POST",
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    "startdate": toDate,
-    "enddate": fromDate
-  }),
-})
-  .then((response) => response.json())
-  .then((result) => {
-    console.log(result)
-    if(result.success){
-      if(result?.data?.statsData.length >0){
-      let statsData = result?.data?.statsData[0]
-      console.log({statsData})
-
-      setstats({
-        score:statsData?.score,
-        distanceTravelled:statsData?.distance,
-        timedurationHr:statsData?.durationHours,
-        timeDurationMin:statsData?.durationMinutes,
-        avgSpeed:statsData?.averageSpeed,
-        topspeed:statsData?.topSpeed,
-        fuelConsume:statsData?.fuelConsumed,
-        fuelCost:statsData?.fuelCost,
-        scoreStatus: statsData?.score > 90 ? "Excellent" : (
-          statsData?.score > 70 ? "Good" : (
-            statsData?.score > 40 ? "Average" : "Poor"
-          )
-        ),
-        scoreStatusColor: statsData?.score > 90 ? "#259DFE" : (
-          statsData?.score > 70 ? "#259DFE" : (
-            statsData?.score > 40 ? "#E3703C" : "#C14345"
-          )
-        )
-      })}else{
-        setstats({
-          score:"0",
-          distanceTravelled:"0",
-          timedurationHr:"0",
-          timeDurationMin:"00",
-          avgSpeed:"0",
-          topspeed:"0",
-          fuelConsume:"0",
-          fuelCost:"0",
-          scoreStatus:"None",
-          scoreStatusColor:"#259DFE",
+    setIsLoading(true)
+    try {
+      fetch("https://ajjas-backend.vercel.app/api/statistics", {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "startdate": toDate,
+          "enddate": fromDate
+        }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result)
+          setIsLoading(false)
+          if(result.success){
+            if(result?.data?.statsData.length >0){
+            let statsData = result?.data?.statsData[0]
+            console.log({statsData})
+      
+            setstats({
+              score:statsData?.score,
+              distanceTravelled:statsData?.distance,
+              timedurationHr:statsData?.durationHours,
+              timeDurationMin:statsData?.durationMinutes,
+              avgSpeed:statsData?.averageSpeed,
+              topspeed:statsData?.topSpeed,
+              fuelConsume:statsData?.fuelConsumed,
+              fuelCost:statsData?.fuelCost,
+              scoreStatus: statsData?.score > 90 ? "Excellent" : (
+                statsData?.score > 70 ? "Good" : (
+                  statsData?.score > 40 ? "Average" : "Poor"
+                )
+              ),
+              scoreStatusColor: statsData?.score > 90 ? "#259DFE" : (
+                statsData?.score > 70 ? "#259DFE" : (
+                  statsData?.score > 40 ? "#E3703C" : "#C14345"
+                )
+              )
+            })}else{
+              setstats({
+                score:"0",
+                distanceTravelled:"0",
+                timedurationHr:"0",
+                timeDurationMin:"00",
+                avgSpeed:"0",
+                topspeed:"0",
+                fuelConsume:"0",
+                fuelCost:"0",
+                scoreStatus:"None",
+                scoreStatusColor:"#259DFE",
+              })
+              Alert.alert("","No data found for the selected date range")
+            }
+          }
+         
         })
-        Alert.alert("","No data found for the selected date range")
-      }
+        .catch((error) =>{ console.error(error)
+          setIsLoading(false)
+          Alert.alert("","Something Went Wrong")
+        });
+    } catch (err) {
+      console.error(err)
+      setIsLoading(false)
+      Alert.alert("","Something Went Wrong")
     }
-   
-  })
-  .catch((error) => console.error(error));
+
 
   },[fromDate,toDate])
 
@@ -133,7 +145,11 @@ fetch("https://ajjas-backend.vercel.app/api/statistics", {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.middleContainer}>
+        
+        {!!isLoading ? 
+        <ActivityIndicator size="large" color="#FFBE00" style={{display:"flex", flex:1}}/>
+          :
+          <View style={styles.middleContainer}>
 {/* --------------Riding behaviour card----------- */}
           <View style={styles.ridingBehaviorcardWrapper}>
             <View style={styles.ridingBehaviorTitleWrapper}>
@@ -262,6 +278,7 @@ fetch("https://ajjas-backend.vercel.app/api/statistics", {
           ChangedRCRangeCount={"24%"}
           />
         </View>
+        }
 {/* -----------------DateRange Modal -------------------------*/}
       <Modal
         animationType="slide"
@@ -283,7 +300,6 @@ fetch("https://ajjas-backend.vercel.app/api/statistics", {
           setDefaultRange={setDefaultRange}
       />
       </Modal>
-
       </View>
     </SafeAreaView>
   );
